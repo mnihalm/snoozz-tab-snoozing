@@ -1,5 +1,6 @@
-var colours = window.gradientSteps ? gradientSteps('#F3B845', '#DF4E76', 100) : [];
+var colours = (typeof window !== 'undefined' && window.gradientSteps) ? gradientSteps('#F3B845', '#DF4E76', 100) : [];
 function getBrowser() {
+	if (typeof navigator === 'undefined' || typeof document === 'undefined') return 'chrome';
 	if (!!navigator.userAgent.match(/safari/i) && !navigator.userAgent.match(/chrome/i) && typeof document.body.style.webkitFilter !== 'undefined') return 'safari';
 	if (!!window.sidebar) return 'firefox';
 	return 'chrome';
@@ -94,7 +95,7 @@ async function createAlarm(when, willWakeUpATab) {
 }
 async function createNotification(id, title, imgUrl, message, force) {
 	var n = await getOptions('notifications');
-	if (n === 'sound') try { new Audio(chrome.runtime.getURL('sounds/appointed.mp3')).play()} catch (e){}
+	if (n === 'sound' && typeof Audio !== 'undefined') try { new Audio(chrome.runtime.getURL('sounds/appointed.mp3')).play()} catch (e){}
 	if (!chrome.notifications || (n && n === 'off' && !force)) return;
 	await chrome.notifications.create(id, {type: 'basic', iconUrl: chrome.runtime.getURL(imgUrl), title, message});
 }
@@ -106,11 +107,12 @@ async function createWindow(tabId, incognito) {
 /*	CONFIGURE	*/
 
 async function setTheme() {
+	if (typeof document === 'undefined') return;
 	var t = await getOptions('theme');
-	if (t === 'system') t = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	if (t === 'system') t = (typeof window !== 'undefined' && window.matchMedia) && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 	document.body.classList.toggle('dark', t === 'dark');
 }
-setTheme();
+if (typeof document !== 'undefined') setTheme();
 
 var HOUR_FORMAT = 12;
 async function fetchHourFormat() {
@@ -124,8 +126,8 @@ async function updateBadge(cachedTabs, cachedBadge) {
 	var tabs = cachedTabs || await getSnoozedTabs();
 	tabs = sleeping(tabs);
 	if (tabs.length > 0 && badge && ['all','today'].includes(badge)) num = badge === 'today' ? today(tabs).length : tabs.length;
-	chrome.browserAction.setBadgeText({text: num > 0 ? num.toString() : ''});
-	chrome.browserAction.setBadgeBackgroundColor({color: '#0072BC'});
+	chrome.action.setBadgeText({text: num > 0 ? num.toString() : ''});
+	chrome.action.setBadgeBackgroundColor({color: '#0072BC'});
 }
 
 /*	OPEN 	*/
@@ -509,13 +511,20 @@ var getFaviconUrl = url => {
 var getColorForUrl = (url = 'snoozz.me') => colours[url.split('').map(c => c.charCodeAt(0)).reduce((a, b) => a + b) % 100];
 
 var getHostname = url => {
-	var h = Object.assign(document.createElement('a'), {href: url}).hostname;
-	return (h && h.length) ? h : undefined;
+	try {
+		return new URL(url).hostname || undefined;
+	} catch (e) {
+		return undefined;
+	}
 }
 
 var getBetterUrl = url => {
-	var a = Object.assign(document.createElement('a'), {href: url});
-	return a.hostname + a.pathname;
+	try {
+		var u = new URL(url);
+		return u.hostname + u.pathname;
+	} catch (e) {
+		return url;
+	}
 }
 
 var getTabCountLabel = tabs => `${tabs.length} tab${tabs.length === 1 ? '' : 's'}`

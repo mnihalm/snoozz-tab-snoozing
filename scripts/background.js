@@ -112,8 +112,6 @@ async function setUpContextMenus(cachedMenus) {
 			...(getBrowser() === 'firefox') ? {icons: {32: `../icons/${o}.png`}} : {}
 		});
 	}
-	chrome.contextMenus.onClicked.addListener(snoozeInBackground);
-	if (getBrowser() === 'firefox') chrome.contextMenus.onShown.addListener(contextMenuUpdater);
 }
 if (chrome.commands) chrome.commands.onCommand.addListener(async (command, tab) => {
 	if (command === 'nap-room') return openExtensionTab('/html/nap-room.html');
@@ -207,10 +205,14 @@ chrome.runtime.onStartup.addListener(init);
 chrome.alarms.onAlarm.addListener(async a => { if (a.name === 'wakeUpTabs') await wakeUpTask()});
 if (chrome.idle) chrome.idle.onStateChanged.addListener(async s => {
 	if (s === 'active' || getBrowser() === 'firefox') {
-		if (navigator && navigator.onLine === false) {
-			window.addEventListener('online', async _ => {await wakeUpTask()}, {once: true});
+		if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+			self.addEventListener('online', async _ => {await wakeUpTask()}, {once: true});
 		} else {
-			await wakeUpTask();	
+			await wakeUpTask();
 		}
 	}
 });
+
+// MV3: Register event listeners at top level (must be synchronous on service worker startup)
+chrome.contextMenus.onClicked.addListener(snoozeInBackground);
+if (getBrowser() === 'firefox') chrome.contextMenus.onShown.addListener(contextMenuUpdater);
