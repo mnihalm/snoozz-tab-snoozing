@@ -33,11 +33,6 @@
 		"matches": ["<all_urls>"]
 	}],
 
-	"content_scripts": [{
-		"matches": ["https://*.snoozz.me/*"],
-		"js": ["scripts/snoozz.me.js"]
-	}],
-
 	"commands": {
 		"nap-room": {
 			"description": "Show me my sleeping tabs"

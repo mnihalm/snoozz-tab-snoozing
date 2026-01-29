@@ -21,18 +21,14 @@
 	<a href="https://github.com/rohanb10/snoozz-tab-snoozing/blob/master/LICENSE">
 		<img src="https://img.shields.io/github/license/rohanb10/snoozz-tab-snoozing?color=lightgrey" alt="License">
 	</a>
-	<a href="https://paypal.me/rohanrohanrohanrohan/2USD">
-		<img alt="Paypal Donate Link" src="https://img.shields.io/badge/Donate-PayPal-success">
-	</a>
 </div>
 
 
 -------------
 
+> **Note:** This is a fork of [rohanb10/snoozz-tab-snoozing](https://github.com/rohanb10/snoozz-tab-snoozing) updated to Manifest V3. The original project appears to be abandoned and the snoozz.me website is no longer available. Broken website links have been removed.
 
 A Web Extension to *snoozz* tabs and windows now and have them reopen automatically later.
-
-Check out the [Snoozz.me](https://snoozz.me) website for more features, screenshots, demo gifs, and the privacy policy (spoiler: nothing is tracked)
 
 Features:
 - Snooze individual tabs, selected tabs, or full windows in just two clicks
@@ -45,9 +41,7 @@ I initially built this for myself. Had too many tabs open at the end of the day,
 
 Available on [Chrome](https://chrome.google.com/webstore/detail/snoozz-snooze-tabs-window/lklendgldejcnkkaldoggoapclkepgfb), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/snoozz/), [Edge](https://microsoftedge.microsoft.com/addons/detail/ifofnjpbldmdcbkaalbdgaopphhlopok) and as a custom build for [Safari](https://github.com/rohanb10/snoozz-tab-snoozing/blob/master/docs/safari.md).
 
-[Latest Release](https://github.com/rohanb10/snoozz-tab-snoozing/releases/latest/) | [Changelog](https://snoozz.me/changelog) | [Browser Compatibility](https://snoozz.me/compatibility) | [Privacy](https://snoozz.me/privacy)
-
-Related repos: [Snoozz Website](https://github.com/rohanb10/snoozz-web) | [Snoozz Stats](https://github.com/rohanb10/snoozz-stats)
+[Latest Release](https://github.com/rohanb10/snoozz-tab-snoozing/releases/latest/) | [Privacy](docs/PRIVACY.md) | [Changelog](docs/changelog.md)
 
 
 ## Colours
@@ -59,5 +53,3 @@ Orange: `#F3B845` | Pink: `#DF4E76`
 Snoozz is licensed under the [GNU GPLv3](https://github.com/rohanb10/snoozz-tab-snoozing/blob/master/LICENSE) license.
 
 Built by [rohan](https://rohan.xyz) in 2020/21
-
-[🍺 Buy me a beer](https://www.buymeacoffee.com/rohanb10)
